@@ -1,0 +1,133 @@
+<header class="header">
+  <!-- Logo -->
+  <div class="header__logo" (click)="navigateTo('/')">
+    <img src="assets/images/logo.jpg" alt="Arrival Logo" class="header__logo-img">
+    <div class="header__logo-text">
+      <span class="header__brand">ARRIVAL</span>
+      <span class="header__tagline">ARRIENDOS EN VALDIVIA</span>
+    </div>
+  </div>
+
+  <!-- Nav desktop (solo visible en ≥768px) -->
+  <nav class="header__nav header__nav--desktop">
+    <a routerLink="/" routerLinkActive="header__nav-link--active"
+       [routerLinkActiveOptions]="{exact: true}" class="header__nav-link">Explorar</a>
+    @if (isArrendatario()) {
+      <a routerLink="/favoritos" routerLinkActive="header__nav-link--active" class="header__nav-link">Favoritos</a>
+    }
+    @if (auth.currentUser()?.rol === 'arrendador') {
+      <a [routerLink]="['/arrendador', auth.currentUser()!.id]" routerLinkActive="header__nav-link--active" class="header__nav-link">Mis Publicaciones</a>
+    }
+  </nav>
+
+  <!-- Buscador -->
+  <div class="header__search">
+    <span class="material-symbols-outlined header__search-icon">search</span>
+    <input #searchInput type="text" placeholder="Buscar por sector, calle o edificio..."
+           class="header__search-input" (input)="onSearch($event)">
+    @if (propiedadesService.busqueda()) {
+      <button class="header__search-clear" (click)="limpiarBusqueda(searchInput)">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    }
+  </div>
+
+  <!-- Acciones -->
+  <div class="header__actions">
+    <!-- Chat rápido (solo desktop) -->
+    <button class="header__action-btn header__action-btn--desktop" (click)="navigateTo('/chats')" title="Mensajes">
+      <span class="material-symbols-outlined">chat</span>
+    </button>
+
+    @if (auth.currentUser()) {
+      <div class="header__user-menu" (click)="toggleMenu()">
+        <div class="header__avatar-wrapper">
+          <img [src]="auth.currentUser()!.avatar" [alt]="auth.currentUser()!.nombre" class="header__avatar">
+          @if (auth.currentUser()!.verificado) {
+            <span class="material-symbols-outlined filled header__verified">verified</span>
+          }
+        </div>
+        <!-- Nombre solo desktop -->
+        <span class="header__user-name" [title]="auth.currentUser()!.nombre">{{ displayNombre }}</span>
+        <span class="material-symbols-outlined header__chevron">expand_more</span>
+
+        @if (showUserMenu()) {
+          <div class="header__dropdown">
+            @if (auth.currentUser()!.rol === 'arrendador') {
+              <a [routerLink]="['/arrendador', auth.currentUser()!.id]" class="header__dropdown-item"
+                 (click)="showUserMenu.set(false)">
+                <span class="material-symbols-outlined">person</span> Ver perfil
+              </a>
+              <a routerLink="/publicar" class="header__dropdown-item" (click)="showUserMenu.set(false)">
+                <span class="material-symbols-outlined">add_home</span> Publicar propiedad
+              </a>
+            }
+            <button (click)="logout()" class="header__dropdown-item header__dropdown-item--danger">
+              <span class="material-symbols-outlined">logout</span> Cerrar sesión
+            </button>
+          </div>
+        }
+      </div>
+    } @else {
+      <a routerLink="/login" class="btn-primary header__login-btn">Ingresar</a>
+    }
+
+    <!-- Hamburguesa móvil -->
+    <button class="header__hamburger" (click)="toggleMobileMenu()" aria-label="Menú">
+      <span class="material-symbols-outlined">{{ showMobileMenu() ? 'close' : 'menu' }}</span>
+    </button>
+  </div>
+</header>
+
+<!-- Menú móvil deslizable -->
+@if (showMobileMenu()) {
+  <div class="mobile-menu" (click)="closeMobileMenu()">
+    <div class="mobile-menu__panel" (click)="$event.stopPropagation()">
+      <div class="mobile-menu__header">
+        @if (auth.currentUser()) {
+          <img [src]="auth.currentUser()!.avatar" [alt]="auth.currentUser()!.nombre" class="mobile-menu__avatar">
+          <div>
+            <strong [title]="auth.currentUser()!.nombre">{{ displayNombre }}</strong>
+            <span class="mobile-menu__role">{{ auth.currentUser()!.rol === 'arrendador' ? 'Arrendador' : 'Arrendatario' }}</span>
+          </div>
+        } @else {
+          <span class="mobile-menu__welcome">Bienvenido a Arrival</span>
+        }
+      </div>
+
+      <nav class="mobile-menu__nav">
+        <a routerLink="/" class="mobile-menu__link" (click)="closeMobileMenu()">
+          <span class="material-symbols-outlined">search</span> Explorar
+        </a>
+        @if (isArrendatario()) {
+          <a routerLink="/favoritos" class="mobile-menu__link" (click)="closeMobileMenu()">
+            <span class="material-symbols-outlined">favorite</span> Favoritos
+          </a>
+        }
+        <a routerLink="/chats" class="mobile-menu__link" (click)="closeMobileMenu()">
+          <span class="material-symbols-outlined">chat</span> Mensajes
+        </a>
+        @if (auth.currentUser()?.rol === 'arrendador') {
+          <a [routerLink]="['/arrendador', auth.currentUser()!.id]" class="mobile-menu__link" (click)="closeMobileMenu()">
+            <span class="material-symbols-outlined">home_work</span> Mis Publicaciones
+          </a>
+          <a routerLink="/publicar" class="mobile-menu__link" (click)="closeMobileMenu()">
+            <span class="material-symbols-outlined">add_home</span> Publicar propiedad
+          </a>
+        }
+      </nav>
+
+      <div class="mobile-menu__footer">
+        @if (auth.currentUser()) {
+          <button class="mobile-menu__logout" (click)="logout()">
+            <span class="material-symbols-outlined">logout</span> Cerrar sesión
+          </button>
+        } @else {
+          <a routerLink="/login" class="btn-primary mobile-menu__login" (click)="closeMobileMenu()">
+            Ingresar
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+}

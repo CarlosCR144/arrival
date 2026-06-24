@@ -1,0 +1,950 @@
+{
+  "meta": {
+    "version": "0.1.0",
+    "app": "Arrival - Arriendos en Valdivia"
+  },
+  "users": [
+    {
+      "id": "u1",
+      "nombre": "Sofía Ramírez",
+      "email": "arrendatario@arrival.cl",
+      "password": "demo123",
+      "rol": "arrendatario",
+      "avatar": "https://i.pravatar.cc/150?img=47",
+      "telefono": "+56 9 8765 4321",
+      "verificado": true,
+      "fechaRegistro": "2026-03-15",
+      "favoritos": [
+        "p2",
+        "p5"
+      ],
+      "chats": [
+        "c1",
+        "c3"
+      ]
+    },
+    {
+      "id": "u2",
+      "nombre": "Ivette Inostroza",
+      "email": "arrendador@arrival.cl",
+      "password": "demo123",
+      "rol": "arrendador",
+      "avatar": "https://i.pravatar.cc/150?img=32",
+      "telefono": "+56 9 7654 3210",
+      "verificado": true,
+      "fechaRegistro": "2025-06-01",
+      "descripcion": "Propietaria con 9 años de experiencia en arriendos residenciales en Valdivia. Especializada en arriendos para estudiantes y familias.",
+      "rating": 4.8,
+      "totalReseñas": 24,
+      "propiedades": [
+        "p1",
+        "p2",
+        "p4",
+        "p7",
+        "p10",
+        "p13"
+      ],
+      "chats": [
+        "c1",
+        "c2"
+      ]
+    },
+    {
+      "id": "u3",
+      "nombre": "Roberto Soto",
+      "email": "roberto@arrival.cl",
+      "password": "demo123",
+      "rol": "arrendador",
+      "avatar": "https://i.pravatar.cc/150?img=12",
+      "telefono": "+56 9 6543 2109",
+      "verificado": true,
+      "fechaRegistro": "2025-11-20",
+      "descripcion": "Corredor de propiedades certificado. Atención rápida y transparente en todo el proceso de arriendo.",
+      "rating": 4.5,
+      "totalReseñas": 11,
+      "propiedades": [
+        "p3",
+        "p5",
+        "p6",
+        "p8",
+        "p9",
+        "p11",
+        "p12",
+        "p14",
+        "p15"
+      ],
+      "chats": [
+        "c3"
+      ]
+    }
+  ],
+  "propiedades": [
+    {
+      "id": "p1",
+      "titulo": "Departamento moderno Centro",
+      "sector": "Centro",
+      "direccionReferencial": "Calle General Lagos, Centro, Valdivia",
+      "precio": 380000,
+      "tipoContrato": "marzo_diciembre",
+      "disponibleDesde": "2027-03-01",
+      "calefaccion": [
+        "electrica"
+      ],
+      "habitaciones": 1,
+      "baños": 1,
+      "metrosCuadrados": 42,
+      "amoblado": true,
+      "aceptaMascotas": false,
+      "arrendadorId": "u2",
+      "descripcion": "Departamento completamente amoblado a pasos de la Universidad Austral. Cocina equipada, calefacción eléctrica y excelente conectividad. Ideal para estudiantes.",
+      "imagenes": [
+        "https://picsum.photos/seed/depto-centro-1/800/600",
+        "https://picsum.photos/seed/depto-centro-2/800/600",
+        "https://picsum.photos/seed/depto-centro-3/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Refrigerador",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Cama 1.5 plazas",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Escritorio",
+          "estado": "Regular"
+        },
+        {
+          "item": "Microondas",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-05-10",
+      "coordenadas": {
+        "lat": -39.8142,
+        "lng": -73.2459
+      },
+      "reseñasArrendatarios": [
+        {
+          "autor": "Felipe M.",
+          "rating": 5,
+          "comentario": "Excelente ubicación, muy cerca de todo. La señora Ivette es muy atenta.",
+          "fecha": "2025-12-20"
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "titulo": "Depto céntrico amoblado con vista al río",
+      "sector": "Centro",
+      "direccionReferencial": "Av. Arturo Prat, frente al río, Valdivia",
+      "precio": 450000,
+      "tipoContrato": "marzo_diciembre",
+      "disponibleDesde": "2027-03-01",
+      "calefaccion": [
+        "electrica",
+        "pellet"
+      ],
+      "habitaciones": 2,
+      "baños": 1,
+      "metrosCuadrados": 58,
+      "amoblado": true,
+      "aceptaMascotas": false,
+      "arrendadorId": "u2",
+      "descripcion": "Hermoso departamento con vista al río Calle-Calle. Amoblado, dos dormitorios, calefacción a pellet y eléctrica. A una cuadra del mercado fluvial.",
+      "imagenes": [
+        "https://picsum.photos/seed/depto-rio-1/800/600",
+        "https://picsum.photos/seed/depto-rio-2/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Living comedor amoblado",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Estufa a pellet",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Camas (x2)",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Lavadora",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": true,
+      "fechaPublicacion": "2026-06-18",
+      "coordenadas": {
+        "lat": -39.8168,
+        "lng": -73.2445
+      },
+      "reseñasArrendatarios": [
+        {
+          "autor": "Camila R.",
+          "rating": 5,
+          "comentario": "La vista es increíble. Muy buena comunicación con la arrendadora.",
+          "fecha": "2025-11-15"
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "titulo": "Casa familiar Isla Teja con jardín",
+      "sector": "Isla Teja",
+      "direccionReferencial": "Los Lingues, Isla Teja, Valdivia",
+      "precio": 650000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-08-01",
+      "calefaccion": [
+        "pellet"
+      ],
+      "habitaciones": 3,
+      "baños": 2,
+      "metrosCuadrados": 120,
+      "amoblado": false,
+      "aceptaMascotas": true,
+      "arrendadorId": "u3",
+      "descripcion": "Amplia casa en el tranquilo sector de Isla Teja, cerca de la UACh. Jardín privado, estacionamiento, calefacción a pellet. Acepta mascotas.",
+      "imagenes": [
+        "https://picsum.photos/seed/casa-iteja-1/800/600",
+        "https://picsum.photos/seed/casa-iteja-2/800/600",
+        "https://picsum.photos/seed/casa-iteja-3/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Estufa pellet",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Calefont gas",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Cocina",
+          "estado": "Regular"
+        },
+        {
+          "item": "Jardín con pasto",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-06-01",
+      "coordenadas": {
+        "lat": -39.8089,
+        "lng": -73.2558
+      },
+      "reseñasArrendatarios": [
+        {
+          "autor": "Martina V.",
+          "rating": 4,
+          "comentario": "Muy tranquila la zona. El jardín es genial para los perros.",
+          "fecha": "2025-10-05"
+        },
+        {
+          "autor": "Diego P.",
+          "rating": 5,
+          "comentario": "Roberto es muy responsable y claro en las condiciones.",
+          "fecha": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "titulo": "Departamento cerca UACh Isla Teja",
+      "sector": "Isla Teja",
+      "direccionReferencial": "Camino Isla Teja s/n, frente UACh",
+      "precio": 320000,
+      "tipoContrato": "marzo_diciembre",
+      "disponibleDesde": "2027-03-01",
+      "calefaccion": [
+        "electrica"
+      ],
+      "habitaciones": 1,
+      "baños": 1,
+      "metrosCuadrados": 35,
+      "amoblado": true,
+      "aceptaMascotas": false,
+      "arrendadorId": "u2",
+      "descripcion": "Studio amoblado a metros de la UACh, ideal para universitarios. Cocina equipada, wifi incluido, calefacción eléctrica.",
+      "imagenes": [
+        "https://picsum.photos/seed/studio-uach-1/800/600",
+        "https://picsum.photos/seed/studio-uach-2/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Cama 1.5 plazas",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Escritorio + silla",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Microondas",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Refrigerador pequeño",
+          "estado": "Regular"
+        }
+      ],
+      "nuevo": true,
+      "fechaPublicacion": "2026-06-19",
+      "coordenadas": {
+        "lat": -39.8094,
+        "lng": -73.254
+      },
+      "reseñasArrendatarios": []
+    },
+    {
+      "id": "p5",
+      "titulo": "Amplia casa Barrios Bajos",
+      "sector": "Barrios Bajos",
+      "direccionReferencial": "Av. René Schneider, Barrios Bajos, Valdivia",
+      "precio": 850000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-07-01",
+      "calefaccion": [
+        "leña",
+        "pellet"
+      ],
+      "habitaciones": 4,
+      "baños": 3,
+      "metrosCuadrados": 200,
+      "amoblado": false,
+      "aceptaMascotas": true,
+      "arrendadorId": "u3",
+      "descripcion": "Gran casa para familia numerosa. 4 dormitorios, 3 baños, amplio living, comedor, patio trasero. Calefacción mixta leña y pellet. Estacionamiento doble.",
+      "imagenes": [
+        "https://picsum.photos/seed/casagrande-bb-1/800/600",
+        "https://picsum.photos/seed/casagrande-bb-2/800/600",
+        "https://picsum.photos/seed/casagrande-bb-3/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Chimenea a leña",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Estufa pellet",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Patio trasero",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Estacionamiento doble",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-05-28",
+      "coordenadas": {
+        "lat": -39.821,
+        "lng": -73.238
+      },
+      "reseñasArrendatarios": [
+        {
+          "autor": "Familia Sánchez",
+          "rating": 5,
+          "comentario": "La mejor experiencia de arriendo que hemos tenido. Todo impecable.",
+          "fecha": "2025-09-01"
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "titulo": "Casa 2 dormitorios Barrios Bajos",
+      "sector": "Barrios Bajos",
+      "direccionReferencial": "Pasaje Los Robles, Barrios Bajos",
+      "precio": 420000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-08-01",
+      "calefaccion": [
+        "leña"
+      ],
+      "habitaciones": 2,
+      "baños": 1,
+      "metrosCuadrados": 72,
+      "amoblado": false,
+      "aceptaMascotas": true,
+      "arrendadorId": "u3",
+      "descripcion": "Cómoda casa con patio, dos dormitorios bien iluminados y cocina independiente. Barrio tranquilo, excelente locomoción.",
+      "imagenes": [
+        "https://picsum.photos/seed/casa-bb2-1/800/600",
+        "https://picsum.photos/seed/casa-bb2-2/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Cocina a gas",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Calefont",
+          "estado": "Regular"
+        },
+        {
+          "item": "Patio",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-06-05",
+      "coordenadas": {
+        "lat": -39.8225,
+        "lng": -73.2365
+      },
+      "reseñasArrendatarios": []
+    },
+    {
+      "id": "p7",
+      "titulo": "Estudio económico Las Ánimas",
+      "sector": "Las Ánimas",
+      "direccionReferencial": "Av. Las Ánimas, frente terminal buses",
+      "precio": 260000,
+      "tipoContrato": "marzo_diciembre",
+      "disponibleDesde": "2027-03-01",
+      "calefaccion": [
+        "electrica"
+      ],
+      "habitaciones": 1,
+      "baños": 1,
+      "metrosCuadrados": 28,
+      "amoblado": true,
+      "aceptaMascotas": false,
+      "arrendadorId": "u2",
+      "descripcion": "Estudio pequeño pero funcional, completamente amoblado. Ideal para estudiante de presupuesto ajustado. Locomoción en la puerta.",
+      "imagenes": [
+        "https://picsum.photos/seed/estudio-animas/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Cama 1 plaza",
+          "estado": "Regular"
+        },
+        {
+          "item": "Escritorio",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Refrigerador",
+          "estado": "Regular"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-04-20",
+      "coordenadas": {
+        "lat": -39.8302,
+        "lng": -73.229
+      },
+      "reseñasArrendatarios": [
+        {
+          "autor": "Juan C.",
+          "rating": 3,
+          "comentario": "Chico pero bien ubicado. Precio accesible.",
+          "fecha": "2025-12-01"
+        }
+      ]
+    },
+    {
+      "id": "p8",
+      "titulo": "Departamento nuevo Las Ánimas",
+      "sector": "Las Ánimas",
+      "direccionReferencial": "Condominio Los Arrayanes, Las Ánimas",
+      "precio": 380000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-07-15",
+      "calefaccion": [
+        "electrica",
+        "gas"
+      ],
+      "habitaciones": 2,
+      "baños": 1,
+      "metrosCuadrados": 55,
+      "amoblado": false,
+      "aceptaMascotas": false,
+      "arrendadorId": "u3",
+      "descripcion": "Departamento en condominio cerrado con portería. Dos dormitorios, estacionamiento incluido. Edificio nuevo, muy bien mantenido.",
+      "imagenes": [
+        "https://picsum.photos/seed/depto-animas-1/800/600",
+        "https://picsum.photos/seed/depto-animas-2/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Estacionamiento cubierto",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Calefacción eléctrica",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Calefont a gas",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": true,
+      "fechaPublicacion": "2026-06-20",
+      "coordenadas": {
+        "lat": -39.8315,
+        "lng": -73.2275
+      },
+      "reseñasArrendatarios": []
+    },
+    {
+      "id": "p9",
+      "titulo": "Casa con jardín sector Huachocopihue",
+      "sector": "Huachocopihue",
+      "direccionReferencial": "Camino Huachocopihue km 3",
+      "precio": 520000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-09-01",
+      "calefaccion": [
+        "pellet"
+      ],
+      "habitaciones": 3,
+      "baños": 2,
+      "metrosCuadrados": 95,
+      "amoblado": false,
+      "aceptaMascotas": true,
+      "arrendadorId": "u3",
+      "descripcion": "Casa independiente con gran jardín arbolado. Tres dormitorios, dos baños, bodega y estacionamiento. Entorno natural, ideal para familias.",
+      "imagenes": [
+        "https://picsum.photos/seed/casa-huacho-1/800/600",
+        "https://picsum.photos/seed/casa-huacho-2/800/600",
+        "https://picsum.photos/seed/casa-huacho-3/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Estufa pellet",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Jardín arbolado",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Bodega",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Estacionamiento",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-05-15",
+      "coordenadas": {
+        "lat": -39.845,
+        "lng": -73.21
+      },
+      "reseñasArrendatarios": [
+        {
+          "autor": "Paulo A.",
+          "rating": 4,
+          "comentario": "Super tranquilo. Un poco lejos del centro pero vale la pena.",
+          "fecha": "2025-08-10"
+        }
+      ]
+    },
+    {
+      "id": "p10",
+      "titulo": "Parcela habitacional Huachocopihue",
+      "sector": "Huachocopihue",
+      "direccionReferencial": "Sector rural Huachocopihue, Valdivia",
+      "precio": 480000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-08-15",
+      "calefaccion": [
+        "leña"
+      ],
+      "habitaciones": 3,
+      "baños": 1,
+      "metrosCuadrados": 110,
+      "amoblado": false,
+      "aceptaMascotas": true,
+      "arrendadorId": "u2",
+      "descripcion": "Casa en parcela de 1500 m². Ideal para quienes buscan tranquilidad y contacto con la naturaleza. Huerto, gallinero y espacio para mascotas.",
+      "imagenes": [
+        "https://picsum.photos/seed/parcela-1/800/600",
+        "https://picsum.photos/seed/parcela-2/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Chimenea a leña",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Huerto",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Gallinero",
+          "estado": "Regular"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-05-02",
+      "coordenadas": {
+        "lat": -39.849,
+        "lng": -73.205
+      },
+      "reseñasArrendatarios": []
+    },
+    {
+      "id": "p11",
+      "titulo": "Departamento Miraflores con estacionamiento",
+      "sector": "Miraflores",
+      "direccionReferencial": "Av. Miraflores 1250, Valdivia",
+      "precio": 400000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-07-01",
+      "calefaccion": [
+        "electrica",
+        "pellet"
+      ],
+      "habitaciones": 2,
+      "baños": 1,
+      "metrosCuadrados": 65,
+      "amoblado": true,
+      "aceptaMascotas": false,
+      "arrendadorId": "u3",
+      "descripcion": "Departamento amoblado en edificio con estacionamiento propio. Dos dormitorios, living-comedor separado. Cercano a supermercados y colegios.",
+      "imagenes": [
+        "https://picsum.photos/seed/depto-miraflores-1/800/600",
+        "https://picsum.photos/seed/depto-miraflores-2/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Estacionamiento",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Estufa pellet",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Living amoblado",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Lavadora",
+          "estado": "Regular"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-06-10",
+      "coordenadas": {
+        "lat": -39.8175,
+        "lng": -73.233
+      },
+      "reseñasArrendatarios": [
+        {
+          "autor": "Andrea L.",
+          "rating": 5,
+          "comentario": "Todo excelente, Roberto siempre disponible para cualquier consulta.",
+          "fecha": "2026-01-15"
+        }
+      ]
+    },
+    {
+      "id": "p12",
+      "titulo": "Casa 3D Miraflores ideal familia",
+      "sector": "Miraflores",
+      "direccionReferencial": "Pasaje Las Rosas, Miraflores, Valdivia",
+      "precio": 580000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-08-01",
+      "calefaccion": [
+        "leña",
+        "electrica"
+      ],
+      "habitaciones": 3,
+      "baños": 2,
+      "metrosCuadrados": 105,
+      "amoblado": false,
+      "aceptaMascotas": true,
+      "arrendadorId": "u3",
+      "descripcion": "Casa de dos pisos en condominio cerrado. Tres dormitorios, patio privado, quincho y estacionamiento. Barrio familiar y seguro.",
+      "imagenes": [
+        "https://picsum.photos/seed/casa-miraflores-1/800/600",
+        "https://picsum.photos/seed/casa-miraflores-2/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Quincho",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Chimenea",
+          "estado": "Regular"
+        },
+        {
+          "item": "Patio privado",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": true,
+      "fechaPublicacion": "2026-06-21",
+      "coordenadas": {
+        "lat": -39.819,
+        "lng": -73.2315
+      },
+      "reseñasArrendatarios": []
+    },
+    {
+      "id": "p13",
+      "titulo": "Casa cerca río Torobayo",
+      "sector": "Torobayo",
+      "direccionReferencial": "Camino Torobayo s/n, sector río",
+      "precio": 350000,
+      "tipoContrato": "marzo_diciembre",
+      "disponibleDesde": "2027-03-01",
+      "calefaccion": [
+        "leña"
+      ],
+      "habitaciones": 2,
+      "baños": 1,
+      "metrosCuadrados": 68,
+      "amoblado": false,
+      "aceptaMascotas": true,
+      "arrendadorId": "u2",
+      "descripcion": "Casa a orillas del río, entorno de naturaleza privilegiado. Ideal para estudiantes que buscan tranquilidad. Locomoción disponible.",
+      "imagenes": [
+        "https://picsum.photos/seed/casa-torobayo-1/800/600",
+        "https://picsum.photos/seed/casa-torobayo-2/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Chimenea a leña",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Terraza",
+          "estado": "Regular"
+        },
+        {
+          "item": "Acceso al río",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-06-08",
+      "coordenadas": {
+        "lat": -39.838,
+        "lng": -73.195
+      },
+      "reseñasArrendatarios": []
+    },
+    {
+      "id": "p14",
+      "titulo": "Departamento sector industrial Collico",
+      "sector": "Collico",
+      "direccionReferencial": "Av. Beauchef, Collico, Valdivia",
+      "precio": 290000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-07-01",
+      "calefaccion": [
+        "gas"
+      ],
+      "habitaciones": 1,
+      "baños": 1,
+      "metrosCuadrados": 40,
+      "amoblado": false,
+      "aceptaMascotas": false,
+      "arrendadorId": "u3",
+      "descripcion": "Departamento en sector residencial tranquilo. Cerca de Mall Paseo Valdivia y locomoción. Calefacción a gas, ideal para trabajadores.",
+      "imagenes": [
+        "https://picsum.photos/seed/depto-collico-1/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Cocina a gas",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Calefont",
+          "estado": "Bueno"
+        }
+      ],
+      "nuevo": false,
+      "fechaPublicacion": "2026-05-25",
+      "coordenadas": {
+        "lat": -39.8055,
+        "lng": -73.262
+      },
+      "reseñasArrendatarios": [
+        {
+          "autor": "Marco T.",
+          "rating": 4,
+          "comentario": "Buen precio, bien ubicado. Sin problemas en el proceso.",
+          "fecha": "2025-11-30"
+        }
+      ]
+    },
+    {
+      "id": "p15",
+      "titulo": "Casa amplia Collico con quincho",
+      "sector": "Collico",
+      "direccionReferencial": "Los Canelos 450, Collico, Valdivia",
+      "precio": 460000,
+      "tipoContrato": "año_corrido",
+      "disponibleDesde": "2026-09-01",
+      "calefaccion": [
+        "leña",
+        "gas"
+      ],
+      "habitaciones": 3,
+      "baños": 2,
+      "metrosCuadrados": 130,
+      "amoblado": false,
+      "aceptaMascotas": true,
+      "arrendadorId": "u3",
+      "descripcion": "Casa amplia con quincho, jardín y estacionamiento. Tres dormitorios, dos baños, cocina americana. Barrio tranquilo y residencial.",
+      "imagenes": [
+        "https://picsum.photos/seed/casa-collico-1/800/600",
+        "https://picsum.photos/seed/casa-collico-2/800/600",
+        "https://picsum.photos/seed/casa-collico-3/800/600"
+      ],
+      "inventario": [
+        {
+          "item": "Quincho techado",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Chimenea a leña",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Cocina americana",
+          "estado": "Bueno"
+        },
+        {
+          "item": "Jardín",
+          "estado": "Regular"
+        }
+      ],
+      "nuevo": true,
+      "fechaPublicacion": "2026-06-21",
+      "coordenadas": {
+        "lat": -39.807,
+        "lng": -73.26
+      },
+      "reseñasArrendatarios": []
+    }
+  ],
+  "chats": [
+    {
+      "id": "c1",
+      "participantes": [
+        "u1",
+        "u2"
+      ],
+      "propiedadId": "p2",
+      "mensajes": [
+        {
+          "id": "m1",
+          "autorId": "u1",
+          "texto": "Hola Ivette, me interesa el departamento con vista al río. ¿Sigue disponible?",
+          "timestamp": "2026-06-18T10:30:00"
+        },
+        {
+          "id": "m2",
+          "autorId": "u2",
+          "texto": "¡Hola Sofía! Sí, sigue disponible. ¿Cuándo te gustaría visitar?",
+          "timestamp": "2026-06-18T10:45:00"
+        },
+        {
+          "id": "m3",
+          "autorId": "u1",
+          "texto": "¿Podría ser este sábado por la mañana?",
+          "timestamp": "2026-06-18T11:00:00"
+        },
+        {
+          "id": "m4",
+          "autorId": "u2",
+          "texto": "¡Perfecto! Quedamos el sábado a las 11:00. Te envío la dirección exacta.",
+          "timestamp": "2026-06-18T11:05:00"
+        }
+      ],
+      "ultimaActividad": "2026-06-18T11:05:00"
+    },
+    {
+      "id": "c2",
+      "participantes": [
+        "u2",
+        "u3"
+      ],
+      "propiedadId": "p3",
+      "mensajes": [
+        {
+          "id": "m5",
+          "autorId": "u2",
+          "texto": "Roberto, ¿tienes disponible la casa de Isla Teja para visita?",
+          "timestamp": "2026-06-15T14:00:00"
+        },
+        {
+          "id": "m6",
+          "autorId": "u3",
+          "texto": "Sí, está disponible. ¿Estás buscando para ti o para otro arrendatario?",
+          "timestamp": "2026-06-15T14:30:00"
+        }
+      ],
+      "ultimaActividad": "2026-06-15T14:30:00"
+    },
+    {
+      "id": "c3",
+      "participantes": [
+        "u1",
+        "u3"
+      ],
+      "propiedadId": "p5",
+      "mensajes": [
+        {
+          "id": "m7",
+          "autorId": "u1",
+          "texto": "Buenas, me interesa la casa de Barrios Bajos. ¿Acepta un gato?",
+          "timestamp": "2026-06-20T09:00:00"
+        },
+        {
+          "id": "m8",
+          "autorId": "u3",
+          "texto": "Hola, sí acepta mascotas sin problema. ¿Cuántas personas serían?",
+          "timestamp": "2026-06-20T09:15:00"
+        },
+        {
+          "id": "m9",
+          "autorId": "u1",
+          "texto": "Serían 3 personas. Somos estudiantes del último año.",
+          "timestamp": "2026-06-20T09:20:00"
+        },
+        {
+          "id": "m10",
+          "autorId": "u3",
+          "texto": "Perfecto, sin problema. Les pediría liquidaciones o certificado de alumno regular. ¿Cuándo disponibles para visita?",
+          "timestamp": "2026-06-20T09:30:00"
+        }
+      ],
+      "ultimaActividad": "2026-06-20T09:30:00"
+    }
+  ],
+  "session": {
+    "usuarioActual": null,
+    "comparador": [],
+    "filtrosActivos": {
+      "sector": "todos",
+      "precioMin": 0,
+      "precioMax": 1000000,
+      "tipoContrato": "todos",
+      "calefaccion": [],
+      "amoblado": null,
+      "aceptaMascotas": null
+    }
+  }
+}

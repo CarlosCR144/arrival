@@ -1,0 +1,145 @@
+@if (arrendador()) {
+<div class="perfil">
+
+  <!-- Header del perfil -->
+  <div class="perfil__hero">
+    <div class="perfil__header">
+      <img [src]="arrendador()!.avatar" [alt]="arrendador()!.nombre" class="perfil__avatar">
+      <div class="perfil__info">
+        <h1 class="perfil__name">
+          {{ arrendador()!.nombre }}
+          @if (arrendador()!.verificado) {
+            <span class="material-symbols-outlined filled perfil__verified">verified</span>
+          }
+        </h1>
+        @if (arrendador()!.rating) {
+          <div class="perfil__rating">
+            @for (star of starsArray; track star) {
+              <span class="material-symbols-outlined filled perfil__star"
+                    [class.perfil__star--empty]="star > (arrendador()!.rating ?? 0)">star</span>
+            }
+            <span class="perfil__rating-count">({{ arrendador()!.totalResenias }} reseñas)</span>
+          </div>
+        }
+        @if (arrendador()!.descripcion) {
+          <p class="perfil__description">{{ arrendador()!.descripcion }}</p>
+        }
+        <div class="perfil__meta">
+          <span class="perfil__meta-item">
+            <span class="material-symbols-outlined">calendar_month</span>
+            Miembro desde {{ arrendador()!.fechaRegistro }}
+          </span>
+          <span class="perfil__meta-item">
+            <span class="material-symbols-outlined">home</span>
+            {{ propiedades().length }} propiedades activas
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Propiedades -->
+  <section class="perfil__section">
+    <div class="perfil__section-header">
+      <h2>{{ esPropietario() ? 'Tus Propiedades' : 'Propiedades activas' }}</h2>
+      @if (esPropietario()) {
+        <div class="perfil__status-counts">
+          <span class="perfil__count" title="Activas">{{ activasCount() }}</span>
+          @if (ocultasCount() > 0) { <span class="perfil__count perfil__count--warning" title="Ocultas">{{ ocultasCount() }}</span> }
+          @if (eliminadasCount() > 0) { <span class="perfil__count perfil__count--danger" title="Eliminadas">{{ eliminadasCount() }}</span> }
+        </div>
+      } @else {
+        <span class="perfil__count">{{ propiedades().length }}</span>
+      }
+    </div>
+    @if (propiedades().length > 0) {
+      <div class="perfil__grid">
+        @for (prop of propiedades(); track prop.id) {
+          <div class="perfil__prop-wrapper" [class.perfil__prop-wrapper--hidden]="prop.estado === 'Oculta'" [class.perfil__prop-wrapper--deleted]="prop.estado === 'Eliminada'">
+            @if (esPropietario()) {
+              <div class="perfil__prop-actions">
+                <span class="perfil__prop-status">Estado: <strong>{{ prop.estado || 'Activa' }}</strong></span>
+                <div class="perfil__prop-btn-group">
+                  <button class="btn-secondary perfil__action-btn" (click)="editarPropiedad(prop.id)" title="Editar" [disabled]="prop.estado === 'Eliminada'">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button class="btn-secondary perfil__action-btn" (click)="toggleVisibilidad(prop)" [title]="prop.estado === 'Oculta' ? 'Mostrar' : 'Ocultar'" [disabled]="prop.estado === 'Eliminada'">
+                    <span class="material-symbols-outlined">{{ prop.estado === 'Oculta' ? 'visibility' : 'visibility_off' }}</span>
+                  </button>
+                  @if (prop.estado !== 'Eliminada') {
+                    <button class="btn-secondary perfil__action-btn perfil__action-btn--danger" (click)="eliminarPropiedad(prop.id)" title="Eliminar">
+                      <span class="material-symbols-outlined">delete</span>
+                    </button>
+                  } @else {
+                    <button class="btn-secondary perfil__action-btn perfil__action-btn--restore" (click)="restaurarPropiedad(prop.id)" title="Restaurar">
+                      <span class="material-symbols-outlined">restore</span>
+                    </button>
+                    <button class="btn-secondary perfil__action-btn perfil__action-btn--hard-danger" (click)="eliminarDefinitivo(prop.id)" title="Eliminación Definitiva">
+                      <span class="material-symbols-outlined">delete_forever</span>
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+            <app-property-card [propiedad]="prop" mode="grid"></app-property-card>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="perfil__empty-text">Este arrendador no tiene propiedades activas.</p>
+    }
+  </section>
+
+  <!-- Reseñas -->
+  @if (todasResenas().length > 0) {
+    <section class="perfil__section">
+      <div class="perfil__section-header">
+        <h2>Reseñas recibidas</h2>
+        <span class="perfil__count">{{ todasResenas().length }}</span>
+      </div>
+      <div class="perfil__reviews">
+        @for (resena of todasResenas(); track resena.fecha + resena.autor) {
+          <div class="perfil__review">
+            <div class="perfil__review-header">
+              <strong>{{ resena.autor }}</strong>
+              <div class="perfil__review-stars">
+                @for (star of starsArray; track star) {
+                  <span class="material-symbols-outlined filled perfil__star perfil__star--sm"
+                        [class.perfil__star--empty]="star > resena.rating">star</span>
+                }
+              </div>
+            </div>
+            <p>{{ resena.comentario }}</p>
+            <span class="perfil__review-date">{{ resena.fecha }}</span>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Modal de Confirmación de Eliminación -->
+  @if (propiedadAEliminar()) {
+    <div class="perfil__modal-overlay" (click)="cancelarEliminacion()">
+      <div class="perfil__modal" (click)="$event.stopPropagation()">
+        <span class="material-symbols-outlined perfil__modal-icon">warning</span>
+        <h3>{{ tipoEliminacion() === 'hard' ? 'Eliminación Definitiva' : 'Eliminar Propiedad' }}</h3>
+        <p>
+          {{ tipoEliminacion() === 'hard' 
+             ? 'Esta acción es irreversible y la propiedad desaparecerá por completo de la plataforma. Ten en cuenta que los chats y procesos de contacto asociados a esta publicación quedarán bloqueados de forma permanente para todos los participantes involucrados.'
+             : '¿Seguro que deseas eliminar esta propiedad? Seguirá siendo visible de forma limitada en los historiales de chat.' }}
+        </p>
+        <div class="perfil__modal-actions">
+          <button class="btn-secondary" (click)="cancelarEliminacion()">Cancelar</button>
+          <button class="btn-primary btn-danger" (click)="confirmarEliminacion()">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
+} @else {
+  <div class="perfil__loading">
+    <span class="material-symbols-outlined">person</span>
+    <p>Cargando perfil...</p>
+  </div>
+}

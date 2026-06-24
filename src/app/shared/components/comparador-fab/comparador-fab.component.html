@@ -1,0 +1,25 @@
+@if (visible()) {
+  <div class="fab">
+    <div class="fab__thumbnails">
+      <div class="fab__thumb-list">
+        @for (prop of propiedadesComparador(); track prop.id) {
+          <img [src]="prop.imagenes[0]" [alt]="prop.titulo" class="fab__thumb">
+        }
+        @if (comparadorIds().length < 2) {
+          <div class="fab__thumb-placeholder">
+            <span class="material-symbols-outlined">add</span>
+          </div>
+        }
+      </div>
+      <span class="fab__count">{{ comparadorIds().length }}/2 propiedades seleccionadas</span>
+    </div>
+    <button class="btn-primary fab__compare-btn"
+            [disabled]="!puedeComparar()"
+            (click)="comparar()">
+      Comparar selección
+    </button>
+    <button class="fab__close-btn" (click)="cerrar()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+}

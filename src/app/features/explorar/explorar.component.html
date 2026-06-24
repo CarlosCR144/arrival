@@ -1,0 +1,188 @@
+<div class="explorar">
+  <!-- Overlay para móviles -->
+  @if (showMobileFilters()) {
+    <div class="explorar__sidebar-overlay" (click)="toggleMobileFilters()"></div>
+  }
+
+  <!-- Sidebar de filtros -->
+  <aside class="explorar__sidebar" [class.explorar__sidebar--open]="showMobileFilters()">
+    <div class="explorar__sidebar-header">
+      <h2 class="explorar__sidebar-title">Filtros Avanzados</h2>
+      <div class="explorar__sidebar-header-actions">
+        @if (filtrosActivos()) {
+          <button class="explorar__reset-btn" (click)="resetFiltros()">Limpiar</button>
+        }
+        <button class="explorar__close-btn" (click)="toggleMobileFilters()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="explorar__filter-group">
+      <div class="explorar__filter-label-row">
+        <span class="material-symbols-outlined">location_on</span>
+        <span>Ubicación</span>
+      </div>
+      <select class="explorar__select"
+              [value]="propiedadesService.filtros().sector"
+              (change)="onSectorChange($event)">
+        @for (sector of sectores; track sector) {
+          <option [value]="sector">{{ getSectorLabel(sector) }}</option>
+        }
+      </select>
+    </div>
+
+    <hr class="explorar__divider">
+
+    <!-- Rango de precio -->
+    <div class="explorar__filter-group">
+      <h3 class="explorar__filter-title">Rango de Precio</h3>
+      <div class="explorar__range-track">
+        <div class="explorar__range-fill"
+             [style.width.%]="(propiedadesService.filtros().precioMax / 1000000) * 100"></div>
+        <input type="range" min="100000" max="1000000" step="10000"
+               class="explorar__range"
+               [value]="propiedadesService.filtros().precioMax"
+               (input)="onPrecioMaxChange($event)">
+      </div>
+      <div class="explorar__range-labels">
+        <span>$100.000</span>
+        <span class="explorar__range-value">{{ propiedadesService.filtros().precioMax | precioChileno }}+</span>
+      </div>
+    </div>
+
+    <hr class="explorar__divider">
+
+    <!-- Tipo de contrato -->
+    <div class="explorar__filter-group">
+      <h3 class="explorar__filter-title">Duración del contrato</h3>
+      <div class="explorar__radio-group">
+        <label class="explorar__radio">
+          <input type="radio" name="contrato" value="todos"
+                 [checked]="propiedadesService.filtros().tipoContrato === 'todos'"
+                 (change)="onTipoContratoChange('todos')">
+          <span>Todos</span>
+        </label>
+        <label class="explorar__radio">
+          <input type="radio" name="contrato" value="anio_corrido"
+                 [checked]="propiedadesService.filtros().tipoContrato === 'anio_corrido'"
+                 (change)="onTipoContratoChange('anio_corrido')">
+          <span>Año corrido</span>
+        </label>
+        <label class="explorar__radio">
+          <input type="radio" name="contrato" value="marzo_diciembre"
+                 [checked]="propiedadesService.filtros().tipoContrato === 'marzo_diciembre'"
+                 (change)="onTipoContratoChange('marzo_diciembre')">
+          <span>Marzo a Diciembre (Estudiantes)</span>
+        </label>
+      </div>
+    </div>
+
+    <hr class="explorar__divider">
+
+    <!-- Calefacción -->
+    <div class="explorar__filter-group">
+      <h3 class="explorar__filter-title">Tipo de calefacción</h3>
+      <div class="explorar__checkbox-grid">
+        @for (tipo of calefaccionOpciones; track tipo) {
+          <label class="explorar__checkbox">
+            <input type="checkbox"
+                   [checked]="isCalefaccionActive(tipo)"
+                   (change)="toggleCalefaccion(tipo)">
+            <span>{{ getCalefaccionLabel(tipo) }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <hr class="explorar__divider">
+
+    <!-- Características clave -->
+    <div class="explorar__filter-group">
+      <h3 class="explorar__filter-title">Características Clave</h3>
+      <div class="explorar__checkbox-list">
+        <label class="explorar__checkbox">
+          <input type="checkbox"
+                 [checked]="propiedadesService.filtros().amoblado === true"
+                 (change)="toggleAmoblado()">
+          <span>Amoblado</span>
+        </label>
+        <label class="explorar__checkbox">
+          <input type="checkbox"
+                 [checked]="propiedadesService.filtros().aceptaMascotas === true"
+                 (change)="toggleMascotas()">
+          <span>Acepta mascotas</span>
+        </label>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="explorar__main">
+    <div class="explorar__content-header">
+      <div>
+        <h1 class="explorar__title">Propiedades verificadas en Valdivia</h1>
+        <p class="explorar__subtitle">
+          Mostrando {{ propiedadesVisibles().length }} de {{ totalFiltradas() }} propiedades
+          @if (filtrosActivos()) {
+            <span> · Filtrado: {{ filtrosActivos() }}</span>
+          }
+        </p>
+      </div>
+      <div class="explorar__controls">
+        <button class="explorar__mobile-filter-btn" (click)="toggleMobileFilters()">
+          <span class="material-symbols-outlined">tune</span>
+          Filtros
+        </button>
+        <div class="explorar__sort-wrapper">
+          <select class="explorar__sort-select"
+                  [value]="ordenamiento()"
+                  (change)="onOrdenamientoChange($event)">
+            <option value="recomendados">Recomendados</option>
+            <option value="precio_asc">Menor precio</option>
+            <option value="precio_desc">Mayor precio</option>
+            <option value="recientes">Más recientes</option>
+          </select>
+          <span class="material-symbols-outlined explorar__sort-icon">expand_more</span>
+        </div>
+        <div class="explorar__map-wrapper">
+          <button class="explorar__map-btn">
+            <span class="material-symbols-outlined">map</span>
+            Ver en mapa
+          </button>
+          <div class="explorar__map-tooltip">Funcionalidad futura</div>
+        </div>
+      </div>
+    </div>
+
+    @if (propiedadesVisibles().length > 0) {
+      <div class="explorar__grid">
+        @for (prop of propiedadesVisibles(); track prop.id) {
+          <app-property-card [propiedad]="prop" mode="grid"></app-property-card>
+        }
+      </div>
+
+      @if (propiedadesVisibles().length < totalFiltradas()) {
+        <div class="explorar__load-more">
+          <button class="explorar__load-more-btn" (click)="cargarMas()">
+            Cargar más propiedades
+          </button>
+        </div>
+      }
+    } @else {
+      <div class="explorar__empty">
+        <span class="material-symbols-outlined explorar__empty-icon">search_off</span>
+        <h3>No hay propiedades con estos filtros</h3>
+        <p>Prueba ajustando los criterios de búsqueda.</p>
+        <button class="btn-secondary explorar__empty-btn" (click)="resetFiltros()">
+          Limpiar filtros
+        </button>
+      </div>
+    }
+  </main>
+
+  <!-- FAB Comparador -->
+  <app-comparador-fab></app-comparador-fab>
+</div>

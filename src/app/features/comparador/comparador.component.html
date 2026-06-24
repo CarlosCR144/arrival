@@ -1,0 +1,176 @@
+<div class="comparador">
+  <div class="comparador__header">
+    <button class="comparador__back-btn" (click)="volverExplorar()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Volver a Explorar
+    </button>
+    <h1 class="comparador__title">Comparar Propiedades</h1>
+  </div>
+
+  @if (!tieneDosPropiedades()) {
+    <div class="comparador__empty">
+      <span class="material-symbols-outlined comparador__empty-icon">compare_arrows</span>
+      <h3>Selecciona 2 propiedades para comparar</h3>
+      <p>Usa el botón de comparar en cada tarjeta de propiedad al explorar</p>
+      <button class="btn-primary" (click)="volverExplorar()">Ir a Explorar</button>
+    </div>
+  } @else {
+    <div class="comparador__table-responsive">
+      <div class="comparador__table">
+
+      <!-- Cabecera con imágenes -->
+      <div class="comparador__row comparador__row--header">
+        <div class="comparador__label-cell comparador__label-cell--header"></div>
+        @for (prop of propiedades(); track prop.id; let i = $index) {
+          <div class="comparador__prop-cell">
+            <button class="comparador__remove-btn" (click)="quitarPropiedad(prop.id)" title="Quitar">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+            <img [src]="prop.imagenes[0]" [alt]="prop.titulo" class="comparador__prop-img">
+            <h3 class="comparador__prop-title">{{ prop.titulo }}</h3>
+            <p class="comparador__prop-sector">
+              <span class="material-symbols-outlined">location_on</span>
+              {{ prop.sector }}, Valdivia
+            </p>
+          </div>
+        }
+      </div>
+
+      <!-- Precio -->
+      <div class="comparador__row">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">payments</span>
+          Precio mensual
+        </div>
+        @for (prop of propiedades(); track prop.id; let i = $index) {
+          <div class="comparador__value-cell" [class.comparador__value-cell--best]="isBest('precio', false, i)">
+            <span class="comparador__value">{{ prop.precio | precioChileno }}</span>
+            @if (isBest('precio', false, i)) {
+              <span class="comparador__best-tag">Mejor precio</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Sector -->
+      <div class="comparador__row comparador__row--alt">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">location_on</span>
+          Sector
+        </div>
+        @for (prop of propiedades(); track prop.id) {
+          <div class="comparador__value-cell">{{ prop.sector }}</div>
+        }
+      </div>
+
+      <!-- Habitaciones -->
+      <div class="comparador__row">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">bed</span>
+          Habitaciones
+        </div>
+        @for (prop of propiedades(); track prop.id; let i = $index) {
+          <div class="comparador__value-cell" [class.comparador__value-cell--best]="isBest('habitaciones', true, i)">
+            {{ prop.habitaciones }}
+          </div>
+        }
+      </div>
+
+      <!-- Baños -->
+      <div class="comparador__row comparador__row--alt">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">shower</span>
+          Baños
+        </div>
+        @for (prop of propiedades(); track prop.id; let i = $index) {
+          <div class="comparador__value-cell" [class.comparador__value-cell--best]="isBest('banos', true, i)">
+            {{ prop.banos }}
+          </div>
+        }
+      </div>
+
+      <!-- Metros cuadrados -->
+      <div class="comparador__row">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">straighten</span>
+          Metros cuadrados
+        </div>
+        @for (prop of propiedades(); track prop.id; let i = $index) {
+          <div class="comparador__value-cell" [class.comparador__value-cell--best]="isBest('metrosCuadrados', true, i)">
+            {{ prop.metrosCuadrados }} m²
+          </div>
+        }
+      </div>
+
+      <!-- Calefacción -->
+      <div class="comparador__row comparador__row--alt">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">local_fire_department</span>
+          Calefacción
+        </div>
+        @for (prop of propiedades(); track prop.id) {
+          <div class="comparador__value-cell">{{ getCalefaccionLabel(prop.calefaccion) }}</div>
+        }
+      </div>
+
+      <!-- Amoblado -->
+      <div class="comparador__row">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">chair</span>
+          Amoblado
+        </div>
+        @for (prop of propiedades(); track prop.id) {
+          <div class="comparador__value-cell">
+            <span class="material-symbols-outlined comparador__icon"
+                  [class.comparador__icon--yes]="prop.amoblado"
+                  [class.comparador__icon--no]="!prop.amoblado">
+              {{ prop.amoblado ? 'check_circle' : 'cancel' }}
+            </span>
+          </div>
+        }
+      </div>
+
+      <!-- Mascotas -->
+      <div class="comparador__row comparador__row--alt">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">pets</span>
+          Acepta mascotas
+        </div>
+        @for (prop of propiedades(); track prop.id) {
+          <div class="comparador__value-cell">
+            <span class="material-symbols-outlined comparador__icon"
+                  [class.comparador__icon--yes]="prop.aceptaMascotas"
+                  [class.comparador__icon--no]="!prop.aceptaMascotas">
+              {{ prop.aceptaMascotas ? 'check_circle' : 'cancel' }}
+            </span>
+          </div>
+        }
+      </div>
+
+      <!-- Tipo contrato -->
+      <div class="comparador__row">
+        <div class="comparador__label-cell">
+          <span class="material-symbols-outlined">contract</span>
+          Tipo de contrato
+        </div>
+        @for (prop of propiedades(); track prop.id) {
+          <div class="comparador__value-cell">{{ getContratoLabel(prop.tipoContrato) }}</div>
+        }
+      </div>
+
+      <!-- Acciones -->
+      <div class="comparador__row comparador__row--actions">
+        <div class="comparador__label-cell"></div>
+        @for (prop of propiedades(); track prop.id) {
+          <div class="comparador__value-cell">
+            <a [routerLink]="['/propiedad', prop.id]" class="btn-primary comparador__detail-btn">
+              Ver Detalles
+            </a>
+          </div>
+        }
+      </div>
+
+    </div>
+    </div>
+  }
+</div>

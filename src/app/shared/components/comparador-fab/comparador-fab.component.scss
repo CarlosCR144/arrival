@@ -1,0 +1,154 @@
+.fab {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 24px;
+  background-color: var(--surface-container-lowest);
+  border-radius: 1.5rem;
+  box-shadow: 0px 8px 30px rgba(0, 77, 77, 0.12);
+  border: 1px solid var(--outline-variant);
+  animation: slideUp 0.3s ease-out;
+
+  @keyframes slideUp {
+    from {
+      transform: translateX(-50%) translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  }
+
+  &__thumbnails {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 24px;
+    border-right: 1px solid var(--outline-variant);
+  }
+
+  &__thumb-list {
+    display: flex;
+    align-items: center;
+  }
+
+  &__thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid var(--surface-container-lowest);
+    flex-shrink: 0;
+
+    &:nth-child(n + 2) {
+      margin-left: -12px;
+    }
+  }
+
+  &__thumb-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 2px dashed var(--outline-variant);
+    background-color: var(--surface-container-low);
+    flex-shrink: 0;
+    margin-left: -12px;
+
+    .material-symbols-outlined {
+      font-size: 20px;
+      color: var(--outline);
+    }
+  }
+
+  &__count {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--on-surface-variant);
+    white-space: nowrap;
+  }
+
+  &__compare-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 9999px;
+    background-color: var(--primary);
+    color: var(--on-primary);
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    white-space: nowrap;
+
+    &:hover:not(:disabled) {
+      background-color: var(--primary-container);
+      box-shadow: 0px 4px 20px rgba(0, 77, 77, 0.05);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    flex-shrink: 0;
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    &:hover {
+      background-color: var(--surface-container-low);
+      color: var(--on-surface);
+    }
+  }
+
+  @media (max-width: 600px) {
+    bottom: 16px;
+    width: 90%;
+    max-width: 400px;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 1rem;
+    justify-content: space-between;
+
+    &__thumbnails {
+      padding-right: 12px;
+    }
+
+    &__count {
+      display: none; // Ocultamos el texto "N seleccionadas" para ahorrar espacio
+    }
+
+    &__compare-btn {
+      padding: 0 16px;
+      height: 36px;
+      flex: 1;
+    }
+  }
+}

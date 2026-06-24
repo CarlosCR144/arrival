@@ -1,0 +1,285 @@
+@if (propiedad()) {
+<div class="detalle">
+
+  @if (propiedad()!.estado === 'Oculta' || propiedad()!.estado === 'Eliminada') {
+    <div class="detalle__status-banner" [class.detalle__status-banner--danger]="propiedad()!.estado === 'Eliminada'">
+      <span class="material-symbols-outlined">{{ propiedad()!.estado === 'Oculta' ? 'visibility_off' : 'delete' }}</span>
+      Esta propiedad está actualmente <strong>{{ propiedad()!.estado }}</strong> y no es visible para el público.
+    </div>
+  }
+
+  @if (esPropietario()) {
+    <div class="detalle__owner-actions">
+      <span class="detalle__owner-label">Gestionar publicación:</span>
+      <div class="detalle__owner-btn-group">
+        <button class="btn-secondary detalle__action-btn" (click)="editarPropiedad()" title="Editar" [disabled]="propiedad()!.estado === 'Eliminada'">
+          <span class="material-symbols-outlined">edit</span> Editar
+        </button>
+        <button class="btn-secondary detalle__action-btn" (click)="toggleVisibilidad()" [title]="propiedad()!.estado === 'Oculta' ? 'Mostrar' : 'Ocultar'" [disabled]="propiedad()!.estado === 'Eliminada'">
+          <span class="material-symbols-outlined">{{ propiedad()!.estado === 'Oculta' ? 'visibility' : 'visibility_off' }}</span> {{ propiedad()!.estado === 'Oculta' ? 'Mostrar' : 'Ocultar' }}
+        </button>
+        @if (propiedad()!.estado !== 'Eliminada') {
+          <button class="btn-secondary detalle__action-btn detalle__action-btn--danger" (click)="iniciarEliminacion('soft')" title="Eliminar">
+            <span class="material-symbols-outlined">delete</span> Eliminar
+          </button>
+        } @else {
+          <button class="btn-secondary detalle__action-btn detalle__action-btn--restore" (click)="restaurarPropiedad()" title="Restaurar">
+            <span class="material-symbols-outlined">restore</span> Restaurar
+          </button>
+          <button class="btn-secondary detalle__action-btn detalle__action-btn--hard-danger" (click)="iniciarEliminacion('hard')" title="Eliminación Definitiva">
+            <span class="material-symbols-outlined">delete_forever</span> Eliminar Definitivamente
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Galería -->
+  <div class="detalle__gallery">
+    <div class="detalle__gallery-main">
+      <img [src]="propiedad()!.imagenes[imagenActual()]" [alt]="propiedad()!.titulo" class="detalle__gallery-img">
+      @if (propiedad()!.imagenes.length > 1) {
+        <button class="detalle__gallery-nav detalle__gallery-nav--prev" (click)="anteriorImagen()">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        <button class="detalle__gallery-nav detalle__gallery-nav--next" (click)="siguienteImagen()">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+        <div class="detalle__gallery-dots">
+          @for (img of propiedad()!.imagenes; track img; let i = $index) {
+            <button class="detalle__gallery-dot" [class.detalle__gallery-dot--active]="i === imagenActual()"
+                    (click)="seleccionarImagen(i)"></button>
+          }
+        </div>
+      }
+    </div>
+    @if (propiedad()!.imagenes.length > 1) {
+      <div class="detalle__gallery-thumbs">
+        @for (img of propiedad()!.imagenes; track img; let i = $index) {
+          <img [src]="img" [alt]="'Imagen ' + (i + 1)"
+               class="detalle__gallery-thumb"
+               [class.detalle__gallery-thumb--active]="i === imagenActual()"
+               (click)="seleccionarImagen(i)">
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Contenido en dos columnas -->
+  <div class="detalle__body">
+    <!-- Columna principal -->
+    <div class="detalle__main">
+      <div class="detalle__title-row">
+        <div>
+          <h1 class="detalle__title">{{ propiedad()!.titulo }}</h1>
+          <div class="detalle__location">
+            <span class="material-symbols-outlined">location_on</span>
+            {{ propiedad()!.direccionReferencial }}
+          </div>
+        </div>
+        <div class="detalle__price-block">
+          <span class="detalle__price">{{ propiedad()!.precio | precioChileno }}</span>
+          <span class="detalle__price-unit">/mes</span>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="detalle__badges">
+        @if (disponibilidadEsAhora()) {
+          <span class="badge badge-success">
+            <span class="material-symbols-outlined">check_circle</span>
+            Disponible ahora
+          </span>
+        } @else {
+          <span class="badge badge-info">
+            <span class="material-symbols-outlined">calendar_month</span>
+            {{ disponibilidadTexto() }}
+          </span>
+        }
+        @if (propiedad()!.nuevo) {
+          <span class="badge badge-secondary">Nuevo</span>
+        }
+        <span class="badge">{{ getTipoContratoLabel(propiedad()!.tipoContrato) }}</span>
+      </div>
+
+      <!-- Stats -->
+      <div class="detalle__stats">
+        <div class="detalle__stat">
+          <span class="material-symbols-outlined">bed</span>
+          <div>
+            <strong>{{ propiedad()!.habitaciones }}</strong>
+            <span>Habitaciones</span>
+          </div>
+        </div>
+        <div class="detalle__stat">
+          <span class="material-symbols-outlined">shower</span>
+          <div>
+            <strong>{{ propiedad()!.banos }}</strong>
+            <span>Baños</span>
+          </div>
+        </div>
+        <div class="detalle__stat">
+          <span class="material-symbols-outlined">straighten</span>
+          <div>
+            <strong>{{ propiedad()!.metrosCuadrados }}</strong>
+            <span>m²</span>
+          </div>
+        </div>
+        <div class="detalle__stat">
+          <span class="material-symbols-outlined">local_fire_department</span>
+          <div>
+            <strong>{{ propiedad()!.calefaccion.map(getCalefaccionLabel).join(', ') }}</strong>
+            <span>Calefacción</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Características -->
+      <div class="detalle__features">
+        <div class="detalle__feature" [class.detalle__feature--yes]="propiedad()!.amoblado">
+          <span class="material-symbols-outlined">chair</span>
+          {{ propiedad()!.amoblado ? 'Amoblado' : 'Sin amoblar' }}
+        </div>
+        <div class="detalle__feature" [class.detalle__feature--yes]="propiedad()!.aceptaMascotas">
+          <span class="material-symbols-outlined">pets</span>
+          {{ propiedad()!.aceptaMascotas ? 'Acepta mascotas' : 'No acepta mascotas' }}
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="detalle__section">
+        <h2>Descripción</h2>
+        <p class="detalle__description">{{ propiedad()!.descripcion }}</p>
+      </div>
+
+      <!-- Inventario -->
+      @if (propiedad()!.inventario.length > 0) {
+        <div class="detalle__section">
+          <h2>Inventario</h2>
+          <table class="detalle__table">
+            <thead>
+              <tr>
+                <th>Ítem</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of propiedad()!.inventario; track item.item) {
+                <tr>
+                  <td>{{ item.item }}</td>
+                  <td>
+                    <span class="detalle__estado" [class]="getEstadoClass(item.estado)">
+                      {{ item.estado }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <!-- Reseñas -->
+      @if (propiedad()!.resenas.length > 0) {
+        <div class="detalle__section">
+          <h2>Reseñas de arrendatarios anteriores</h2>
+          <div class="detalle__reviews">
+            @for (resena of propiedad()!.resenas; track resena.fecha) {
+              <div class="detalle__review">
+                <div class="detalle__review-header">
+                  <strong>{{ resena.autor }}</strong>
+                  <div class="detalle__stars">
+                    @for (star of starsArray; track star) {
+                      <span class="material-symbols-outlined filled detalle__star"
+                            [class.detalle__star--empty]="star > resena.rating">star</span>
+                    }
+                  </div>
+                </div>
+                <p>{{ resena.comentario }}</p>
+                <span class="detalle__review-date">{{ resena.fecha }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Sidebar -->
+    <div class="detalle__sidebar">
+      <!-- Card arrendador -->
+      @if (arrendador()) {
+        <div class="detalle__arrendador-card">
+          <div class="detalle__arrendador-top">
+            <img [src]="arrendador()!.avatar" [alt]="arrendador()!.nombre" class="detalle__arrendador-avatar">
+            <div>
+              <div class="detalle__arrendador-name">
+                {{ arrendador()!.nombre }}
+                @if (arrendador()!.verificado) {
+                  <span class="material-symbols-outlined filled detalle__verified">verified</span>
+                }
+              </div>
+              @if (arrendador()!.rating) {
+                <div class="detalle__stars detalle__stars--sm">
+                  @for (star of starsArray; track star) {
+                    <span class="material-symbols-outlined filled detalle__star detalle__star--sm"
+                          [class.detalle__star--empty]="star > (arrendador()!.rating ?? 0)">star</span>
+                  }
+                  <span class="detalle__review-count">({{ arrendador()!.totalResenias }})</span>
+                </div>
+              }
+            </div>
+          </div>
+          <a [routerLink]="['/arrendador', arrendador()!.id]" class="detalle__arrendador-link">
+            Ver perfil completo
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+        </div>
+      }
+
+      <!-- Botones de acción -->
+      <button class="btn-primary detalle__contact-btn" (click)="contactarArrendador()">
+        <span class="material-symbols-outlined">chat</span>
+        Contactar Arrendador
+      </button>
+
+      @if (auth.currentUser()?.rol === 'arrendatario') {
+        <button class="detalle__fav-btn" [class.detalle__fav-btn--active]="esFavorito()" (click)="toggleFavorito()">
+          <span class="material-symbols-outlined" [class.filled]="esFavorito()">favorite</span>
+          {{ esFavorito() ? 'En favoritos' : 'Agregar a favoritos' }}
+        </button>
+      }
+
+      <!-- Mapa -->
+      <div class="detalle__map-container">
+        <h3>Ubicación referencial</h3>
+        <iframe [src]="mapUrl()" class="detalle__map" frameborder="0"
+                allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+  <!-- Modal de Confirmación de Eliminación -->
+  @if (propiedadAEliminar()) {
+    <div class="detalle__modal-overlay" (click)="cancelarEliminacion()">
+      <div class="detalle__modal" (click)="$event.stopPropagation()">
+        <span class="material-symbols-outlined detalle__modal-icon">warning</span>
+        <h3>{{ tipoEliminacion() === 'hard' ? 'Eliminación Definitiva' : 'Eliminar Propiedad' }}</h3>
+        <p>
+          {{ tipoEliminacion() === 'hard' 
+             ? 'Esta acción es irreversible y la propiedad desaparecerá por completo de la plataforma. Ten en cuenta que los chats y procesos de contacto asociados a esta publicación quedarán bloqueados de forma permanente para todos los participantes involucrados.'
+             : '¿Seguro que deseas eliminar esta propiedad? Seguirá siendo visible de forma limitada en los historiales de chat.' }}
+        </p>
+        <div class="detalle__modal-actions">
+          <button class="btn-secondary" (click)="cancelarEliminacion()">Cancelar</button>
+          <button class="btn-primary btn-danger" (click)="confirmarEliminacion()">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
+} @else {
+  <div class="detalle__loading">
+    <span class="material-symbols-outlined">home</span>
+    <p>Cargando propiedad...</p>
+  </div>
+}

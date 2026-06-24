@@ -1,0 +1,119 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-card__header">
+      <img src="assets/images/logo.jpg" alt="Arrival Logo" class="login-card__logo">
+      <h1 class="login-card__title">Bienvenido a Arrival</h1>
+      <p class="login-card__subtitle">Arriendos verificados en Valdivia</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="login-card__tabs">
+      <button class="login-card__tab"
+              [class.login-card__tab--active]="mode() === 'login'"
+              (click)="mode.set('login'); errorMessage.set('')">
+        Iniciar Sesión
+      </button>
+      <button class="login-card__tab"
+              [class.login-card__tab--active]="mode() === 'register'"
+              (click)="mode.set('register'); errorMessage.set('')">
+        Crear Cuenta
+      </button>
+    </div>
+
+    <!-- Error -->
+    @if (errorMessage()) {
+      <div class="login-card__error">
+        <span class="material-symbols-outlined">error</span>
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <!-- Formulario Login -->
+    @if (mode() === 'login') {
+      <form (ngSubmit)="onLogin()" class="login-card__form">
+        <div class="login-card__field">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" [(ngModel)]="loginEmail" name="email"
+                 placeholder="correo@ejemplo.cl" class="input-field" required>
+        </div>
+        <div class="login-card__field">
+          <label for="loginPassword">Contraseña</label>
+          <input id="loginPassword" type="password" [(ngModel)]="loginPassword" name="password"
+                 placeholder="Tu contraseña" class="input-field" required>
+        </div>
+        <button type="submit" class="btn-primary login-card__submit">
+          <span class="material-symbols-outlined">login</span>
+          Ingresar
+        </button>
+      </form>
+
+      <!-- Cuentas demo -->
+      <div class="login-card__demo">
+        <p class="login-card__demo-title">
+          <span class="material-symbols-outlined">info</span>
+          Cuentas demo para testing:
+        </p>
+        <div class="login-card__demo-accounts">
+          <button class="login-card__demo-account" type="button"
+                  (click)="quickLogin('arrendatario@arrival.cl', 'demo123')">
+            <div class="login-card__demo-role">
+              <span class="material-symbols-outlined">search</span>
+              Arrendatario
+            </div>
+            <code>arrendatario&#64;arrival.cl</code>
+          </button>
+          <button class="login-card__demo-account" type="button"
+                  (click)="quickLogin('arrendador@arrival.cl', 'demo123')">
+            <div class="login-card__demo-role">
+              <span class="material-symbols-outlined">home</span>
+              Arrendador
+            </div>
+            <code>arrendador&#64;arrival.cl</code>
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Formulario Registro -->
+    @if (mode() === 'register') {
+      <form (ngSubmit)="onRegister()" class="login-card__form">
+        <div class="login-card__field">
+          <label for="regNombre">Nombre completo</label>
+          <input id="regNombre" type="text" [(ngModel)]="registerNombre" name="nombre"
+                 placeholder="Tu nombre completo" class="input-field" required>
+        </div>
+        <div class="login-card__field">
+          <label for="regEmail">Email</label>
+          <input id="regEmail" type="email" [(ngModel)]="registerEmail" name="email"
+                 placeholder="correo@ejemplo.cl" class="input-field" required>
+        </div>
+        <div class="login-card__field">
+          <label for="regPassword">Contraseña</label>
+          <input id="regPassword" type="password" [(ngModel)]="registerPassword" name="password"
+                 placeholder="Mínimo 6 caracteres" class="input-field" required>
+        </div>
+        <div class="login-card__field">
+          <label>¿Qué buscas?</label>
+          <div class="login-card__role-selector">
+            <label class="login-card__role-option"
+                   [class.login-card__role-option--active]="registerRol === 'arrendatario'">
+              <input type="radio" name="rol" value="arrendatario" [(ngModel)]="registerRol">
+              <span class="material-symbols-outlined">search</span>
+              <span>Busco arriendo</span>
+            </label>
+            <label class="login-card__role-option"
+                   [class.login-card__role-option--active]="registerRol === 'arrendador'">
+              <input type="radio" name="rol" value="arrendador" [(ngModel)]="registerRol">
+              <span class="material-symbols-outlined">home</span>
+              <span>Tengo propiedades</span>
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary login-card__submit">
+          <span class="material-symbols-outlined">person_add</span>
+          Crear Cuenta
+        </button>
+      </form>
+    }
+  </div>
+</div>

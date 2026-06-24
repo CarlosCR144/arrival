@@ -1,0 +1,16 @@
+// ============================================================
+// Elevaciones — Arrival
+// Sombras basadas en las variables de diseño
+// ============================================================
+
+.elevation-0 {
+  box-shadow: none;
+}
+
+.elevation-1 {
+  box-shadow: var(--elevation-1);
+}
+
+.elevation-2 {
+  box-shadow: var(--elevation-2);
+}

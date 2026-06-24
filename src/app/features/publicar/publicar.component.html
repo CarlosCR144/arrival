@@ -1,0 +1,432 @@
+<div class="publicar">
+  <div class="publicar__hero">
+    <div class="publicar__hero-content">
+      <h1 class="publicar__title">{{ editId() ? 'Editar Propiedad' : 'Publicar Propiedad' }}</h1>
+      <p class="publicar__subtitle">{{ editId() ? 'Actualiza los datos de tu anuncio' : 'Llega a miles de arrendatarios en Valdivia' }}</p>
+    </div>
+    <button class="btn-secondary publicar__cancel-btn" (click)="cancelar()">
+      <span class="material-symbols-outlined">close</span>
+      Cancelar
+    </button>
+  </div>
+
+  <!-- Stepper -->
+  <div class="publicar__stepper">
+    @for (step of [1, 2, 3]; track step) {
+      <div class="publicar__step-item">
+        <div class="publicar__step-circle"
+             [class.publicar__step-circle--done]="currentStep() > step"
+             [class.publicar__step-circle--active]="currentStep() === step">
+          @if (currentStep() > step) {
+            <span class="material-symbols-outlined">check</span>
+          } @else {
+            {{ step }}
+          }
+        </div>
+        <span class="publicar__step-label"
+              [class.publicar__step-label--active]="currentStep() >= step">
+          {{ step === 1 ? 'Información' : step === 2 ? 'Características' : 'Confirmar' }}
+        </span>
+      </div>
+      @if (step < 3) {
+        <div class="publicar__step-connector"
+             [class.publicar__step-connector--done]="currentStep() > step"></div>
+      }
+    }
+  </div>
+
+  <div class="publicar__container">
+
+    <!-- ======= STEP 1: Información básica ======= -->
+    @if (currentStep() === 1) {
+      <div class="publicar__card">
+        <h2 class="publicar__card-title">
+          <span class="material-symbols-outlined">info</span>
+          Información básica
+        </h2>
+
+        <!-- Error del paso 1 -->
+        @if (step1Error()) {
+          <div class="publicar__step-error">
+            <span class="material-symbols-outlined">error</span>
+            {{ step1Error() }}
+          </div>
+        }
+
+        <div class="publicar__fields">
+          <!-- Título -->
+          <div class="publicar__field publicar__field--full">
+            <label>Título de la publicación <span class="publicar__required">*</span></label>
+            <input type="text" [(ngModel)]="formData.titulo" class="input-field"
+                   placeholder="Ej: Departamento céntrico amoblado con vista al río">
+          </div>
+
+          <!-- Sector -->
+          <div class="publicar__field">
+            <label>Sector <span class="publicar__required">*</span></label>
+            <select [(ngModel)]="formData.sector" class="input-field">
+              @for (sector of sectores; track sector) {
+                <option [value]="sector">{{ sector }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Dirección -->
+          <div class="publicar__field">
+            <label>Dirección referencial <span class="publicar__required">*</span></label>
+            <input type="text" [(ngModel)]="formData.direccionReferencial" class="input-field"
+                   placeholder="Calle y número">
+          </div>
+
+          <!-- Precio -->
+          <div class="publicar__field">
+            <label>Precio mensual (CLP) <span class="publicar__required">*</span></label>
+            <div class="publicar__price-input">
+              <span class="publicar__price-prefix">$</span>
+              <input type="number" [(ngModel)]="formData.precio" class="input-field"
+                     min="50000" step="10000">
+            </div>
+            <small class="publicar__hint">{{ formData.precio | precioChileno }} / mes</small>
+          </div>
+
+          <!-- Disponible desde -->
+          <div class="publicar__field">
+            <label>Disponible desde <span class="publicar__required">*</span></label>
+            <input type="date" [(ngModel)]="formData.disponibleDesde" class="input-field">
+          </div>
+
+          <!-- Tipo de contrato -->
+          <div class="publicar__field publicar__field--full">
+            <label>Tipo de contrato</label>
+            <div class="publicar__radio-cards">
+              <label class="publicar__radio-card"
+                     [class.publicar__radio-card--active]="formData.tipoContrato === 'anio_corrido'">
+                <input type="radio" name="contrato" value="anio_corrido" [(ngModel)]="formData.tipoContrato">
+                <span class="material-symbols-outlined">calendar_month</span>
+                <div>
+                  <strong>Año corrido</strong>
+                  <small>Enero – Diciembre</small>
+                </div>
+              </label>
+              <label class="publicar__radio-card"
+                     [class.publicar__radio-card--active]="formData.tipoContrato === 'marzo_diciembre'">
+                <input type="radio" name="contrato" value="marzo_diciembre" [(ngModel)]="formData.tipoContrato">
+                <span class="material-symbols-outlined">school</span>
+                <div>
+                  <strong>Marzo – Diciembre</strong>
+                  <small>Ideal para estudiantes</small>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Imágenes (demo referencial) -->
+          <div class="publicar__field publicar__field--full">
+            <label>Fotografías de la propiedad</label>
+            <div class="publicar__images-demo">
+              <div class="publicar__images-demo-icon">
+                <span class="material-symbols-outlined">photo_camera</span>
+              </div>
+              <div class="publicar__images-demo-text">
+                <p><strong>Carga de imágenes no disponible en esta versión</strong></p>
+                <p>En el prototipo, las imágenes se generan automáticamente mediante el servicio
+                  <code>picsum.photos</code> con fines demostrativos. En la versión final, podrás
+                  subir hasta 10 fotografías de tu propiedad en formato JPG o PNG.</p>
+              </div>
+              <div class="publicar__images-preview">
+                <div class="publicar__image-slot">
+                  <span class="material-symbols-outlined">add_photo_alternate</span>
+                  <span>Foto 1</span>
+                </div>
+                <div class="publicar__image-slot publicar__image-slot--disabled">
+                  <span class="material-symbols-outlined">add_photo_alternate</span>
+                  <span>Foto 2</span>
+                </div>
+                <div class="publicar__image-slot publicar__image-slot--disabled">
+                  <span class="material-symbols-outlined">add_photo_alternate</span>
+                  <span>Foto 3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="publicar__nav">
+          <div></div>
+          <button class="btn-primary publicar__next-btn" (click)="nextStep()">
+            Siguiente
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- ======= STEP 2: Características ======= -->
+    @if (currentStep() === 2) {
+      <div class="publicar__card">
+        <h2 class="publicar__card-title">
+          <span class="material-symbols-outlined">tune</span>
+          Características
+        </h2>
+
+        @if (step2Error()) {
+          <div class="publicar__step-error">
+            <span class="material-symbols-outlined">error</span>
+            {{ step2Error() }}
+          </div>
+        }
+
+        <div class="publicar__fields">
+          <!-- Habitaciones -->
+          <div class="publicar__field">
+            <label>Habitaciones</label>
+            <div class="publicar__counter">
+              <button type="button" class="publicar__counter-btn"
+                      (click)="formData.habitaciones = Math.max(1, formData.habitaciones - 1)">
+                <span class="material-symbols-outlined">remove</span>
+              </button>
+              <span class="publicar__counter-value">{{ formData.habitaciones }}</span>
+              <button type="button" class="publicar__counter-btn"
+                      (click)="formData.habitaciones = formData.habitaciones + 1">
+                <span class="material-symbols-outlined">add</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Baños -->
+          <div class="publicar__field">
+            <label>Baños</label>
+            <div class="publicar__counter">
+              <button type="button" class="publicar__counter-btn"
+                      (click)="formData.banos = Math.max(1, formData.banos - 1)">
+                <span class="material-symbols-outlined">remove</span>
+              </button>
+              <span class="publicar__counter-value">{{ formData.banos }}</span>
+              <button type="button" class="publicar__counter-btn"
+                      (click)="formData.banos = formData.banos + 1">
+                <span class="material-symbols-outlined">add</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Metros cuadrados -->
+          <div class="publicar__field">
+            <label>Metros cuadrados</label>
+            <input type="number" [(ngModel)]="formData.metrosCuadrados" class="input-field" min="10">
+          </div>
+
+          <!-- Calefacción (obligatorio) -->
+          <div class="publicar__field publicar__field--full">
+            <label>
+              Tipo de calefacción <span class="publicar__required">*</span>
+              <small class="publicar__field-hint">Selecciona al menos una opción</small>
+            </label>
+            <div class="publicar__check-grid">
+              @for (op of calefaccionOpciones; track op.value) {
+                <label class="publicar__check-card" [class.publicar__check-card--active]="isCalefaccionSelected(op.value)">
+                  <input type="checkbox" [checked]="isCalefaccionSelected(op.value)" (change)="toggleCalefaccion(op.value)">
+                  <span class="material-symbols-outlined">local_fire_department</span>
+                  <span>{{ op.label }}</span>
+                </label>
+              }
+            </div>
+          </div>
+
+          <!-- Características: Amoblado y Mascotas -->
+          <div class="publicar__field publicar__field--full">
+            <label>Características adicionales</label>
+            <div class="publicar__toggles">
+              <label class="publicar__toggle" [class.publicar__toggle--active]="formData.amoblado">
+                <input type="checkbox" [checked]="formData.amoblado" (change)="onToggleAmoblado()">
+                <span class="material-symbols-outlined">chair</span>
+                <span>Amoblado</span>
+                <div class="publicar__toggle-pill"></div>
+              </label>
+              <label class="publicar__toggle" [class.publicar__toggle--active]="formData.aceptaMascotas">
+                <input type="checkbox" [(ngModel)]="formData.aceptaMascotas">
+                <span class="material-symbols-outlined">pets</span>
+                <span>Acepta mascotas</span>
+                <div class="publicar__toggle-pill"></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Inventario de muebles (solo si amoblado) -->
+          @if (formData.amoblado) {
+            <div class="publicar__field publicar__field--full">
+              <div class="publicar__inventory-header">
+                <label>
+                  <span class="material-symbols-outlined">inventory_2</span>
+                  Inventario de muebles y equipamiento
+                </label>
+                <button type="button" class="publicar__inventory-add-btn" (click)="agregarItemInventario()">
+                  <span class="material-symbols-outlined">add</span> Agregar ítem
+                </button>
+              </div>
+              @if (formData.inventario.length === 0) {
+                <p class="publicar__inventory-empty">
+                  Agrega los muebles y equipamiento incluidos en el arriendo (ej: cama, refrigerador, lavadora…).
+                </p>
+              } @else {
+                <div class="publicar__inventory-list">
+                  @for (item of formData.inventario; track $index; let i = $index) {
+                    <div class="publicar__inventory-row">
+                      <input type="text" [(ngModel)]="item.item"
+                             [name]="'item_' + i"
+                             placeholder="Nombre del ítem (ej: Cama 2 plazas)"
+                             class="input-field publicar__inventory-input">
+                      <select [(ngModel)]="item.estado" [name]="'estado_' + i" class="input-field publicar__inventory-select">
+                        @for (estado of estadosInventario; track estado) {
+                          <option [value]="estado">{{ estado }}</option>
+                        }
+                      </select>
+                      <button type="button" class="publicar__inventory-remove" (click)="quitarItemInventario(i)"
+                              title="Quitar ítem">
+                        <span class="material-symbols-outlined">delete</span>
+                      </button>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Descripción -->
+          <div class="publicar__field publicar__field--full">
+            <label>Descripción</label>
+            <textarea [(ngModel)]="formData.descripcion" class="input-field publicar__textarea" rows="4"
+                      placeholder="Describe las características destacadas de tu propiedad..."></textarea>
+          </div>
+        </div>
+
+        <div class="publicar__nav">
+          <button class="btn-secondary publicar__prev-btn" (click)="prevStep()">
+            <span class="material-symbols-outlined">arrow_back</span> Anterior
+          </button>
+          <button class="btn-primary publicar__next-btn" (click)="nextStep()">
+            Siguiente <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- ======= STEP 3: Confirmación ======= -->
+    @if (currentStep() === 3) {
+      <div class="publicar__card">
+        <h2 class="publicar__card-title">
+          <span class="material-symbols-outlined">fact_check</span>
+          Confirmar publicación
+        </h2>
+
+        <div class="publicar__summary">
+          <div class="publicar__summary-section">
+            <h3>Información básica</h3>
+            <div class="publicar__summary-row">
+              <span>Título</span>
+              <strong>{{ formData.titulo }}</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Sector</span>
+              <strong>{{ formData.sector }}</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Dirección</span>
+              <strong>{{ formData.direccionReferencial }}</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Precio</span>
+              <strong class="publicar__summary-price">{{ formData.precio | precioChileno }}/mes</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Contrato</span>
+              <strong>{{ getContratoLabel(formData.tipoContrato) }}</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Disponible desde</span>
+              <strong>{{ formData.disponibleDesde }}</strong>
+            </div>
+          </div>
+
+          <div class="publicar__summary-section">
+            <h3>Características</h3>
+            <div class="publicar__summary-row">
+              <span>Habitaciones</span>
+              <strong>{{ formData.habitaciones }}</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Baños</span>
+              <strong>{{ formData.banos }}</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Metros cuadrados</span>
+              <strong>{{ formData.metrosCuadrados }} m²</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Calefacción</span>
+              <strong>{{ getCalefaccionLabels() }}</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Amoblado</span>
+              <strong>{{ formData.amoblado ? 'Sí' : 'No' }}</strong>
+            </div>
+            <div class="publicar__summary-row">
+              <span>Acepta mascotas</span>
+              <strong>{{ formData.aceptaMascotas ? 'Sí' : 'No' }}</strong>
+            </div>
+          </div>
+
+          @if (formData.amoblado && inventarioValido.length > 0) {
+            <div class="publicar__summary-section">
+              <h3>Inventario ({{ inventarioValido.length }} ítems)</h3>
+              @for (item of inventarioValido; track item.item) {
+                <div class="publicar__summary-row">
+                  <span>{{ item.item }}</span>
+                  <strong class="publicar__summary-estado" [class]="'estado-' + item.estado.toLowerCase()">
+                    {{ item.estado }}
+                  </strong>
+                </div>
+              }
+            </div>
+          }
+
+          @if (formData.descripcion) {
+            <div class="publicar__summary-section">
+              <h3>Descripción</h3>
+              <p>{{ formData.descripcion }}</p>
+            </div>
+          }
+
+          <div class="publicar__summary-section publicar__summary-section--images">
+            <h3>Imágenes</h3>
+            <p class="publicar__summary-images-note">
+              <span class="material-symbols-outlined">info</span>
+              Se asignarán 3 imágenes de demostración automáticamente (picsum.photos).
+            </p>
+          </div>
+        </div>
+
+        <div class="publicar__nav">
+          <button class="btn-secondary publicar__prev-btn" (click)="prevStep()">
+            <span class="material-symbols-outlined">arrow_back</span> Anterior
+          </button>
+          <button class="btn-primary publicar__publish-btn" (click)="publicar()">
+            <span class="material-symbols-outlined">{{ editId() ? 'save' : 'publish' }}</span> 
+            {{ editId() ? 'Guardar Cambios' : 'Publicar propiedad' }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- ======= SUCCESS OVERLAY ======= -->
+  @if (showSuccess()) {
+    <div class="publicar__success-overlay">
+      <div class="publicar__success-card">
+        <span class="material-symbols-outlined filled publicar__success-icon">check_circle</span>
+        <h2>{{ editId() ? '¡Cambios Guardados!' : '¡Propiedad publicada!' }}</h2>
+        <p>{{ editId() ? 'Tu propiedad ha sido actualizada correctamente.' : 'Tu propiedad ya está visible para miles de arrendatarios en Valdivia.' }}</p>
+        <p class="publicar__success-redirect">Redirigiendo a tu perfil...</p>
+      </div>
+    </div>
+  }
+</div>

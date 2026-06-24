@@ -1,0 +1,27 @@
+<div class="favoritos">
+  <div class="favoritos__header">
+    <div>
+      <h1>Mis Favoritos</h1>
+      <p>{{ propiedadesFavoritas().length }} propiedades guardadas</p>
+    </div>
+    <span class="material-symbols-outlined favoritos__header-icon">favorite</span>
+  </div>
+
+  @if (propiedadesFavoritas().length > 0) {
+    <div class="favoritos__grid">
+      @for (prop of propiedadesFavoritas(); track prop.id) {
+        <app-property-card [propiedad]="prop" mode="grid"></app-property-card>
+      }
+    </div>
+  } @else {
+    <div class="favoritos__empty">
+      <span class="material-symbols-outlined favoritos__empty-icon">favorite_border</span>
+      <h3>Aún no tienes favoritos</h3>
+      <p>Explora las propiedades y marca con el corazón las que te interesen para guardarlas aquí.</p>
+      <a routerLink="/" class="btn-primary favoritos__explore-btn">
+        <span class="material-symbols-outlined">search</span>
+        Explorar propiedades
+      </a>
+    </div>
+  }
+</div>

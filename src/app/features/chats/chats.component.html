@@ -1,0 +1,127 @@
+<div class="chats">
+  <!-- Panel izquierdo: lista de chats -->
+  <div class="chats__list-panel" [class.chats__list-panel--hidden]="showConversation()">
+    <div class="chats__list-header">
+      <h2 class="chats__list-title">Mensajes</h2>
+      @if (chats().length > 0) {
+        <span class="chats__list-badge">{{ chats().length }}</span>
+      }
+    </div>
+
+    @if (chats().length === 0) {
+      <div class="chats__list-empty">
+        <span class="material-symbols-outlined">chat_bubble</span>
+        <p>No tienes conversaciones</p>
+        <small>Contacta un arrendador desde la vista de detalle de una propiedad</small>
+      </div>
+    } @else {
+      <div class="chats__list">
+        @for (chat of chats(); track chat.id) {
+          <button class="chats__list-item"
+                  [class.chats__list-item--active]="chatActivo()?.id === chat.id"
+                  (click)="seleccionarChat(chat.id)">
+            <img [src]="getOtroParticipanteAvatar(chat)" class="chats__list-avatar"
+                 [alt]="getOtroParticipanteNombre(chat)">
+            <div class="chats__list-info">
+              <div class="chats__list-row">
+                <strong class="chats__list-name">{{ getOtroParticipanteNombre(chat) }}</strong>
+                <span class="chats__list-time">{{ getTimestamp(chat) }}</span>
+              </div>
+              <span class="chats__list-property" [class.chats__list-property--deleted]="!getPropiedad(chat) || getPropiedad(chat)?.estado === 'Eliminada'">
+                <span class="material-symbols-outlined">home</span>
+                {{ getPropiedadTitulo(chat) }}
+                @if (getPropiedad(chat)?.estado === 'Oculta') {
+                  <span class="chats__status-badge chats__status-badge--warning">(Oculta)</span>
+                }
+              </span>
+              <p class="chats__list-preview">{{ getUltimoMensaje(chat) }}</p>
+            </div>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Panel derecho: conversación -->
+  <div class="chats__conversation-panel" [class.chats__conversation-panel--visible]="showConversation()">
+    @if (chatActivo()) {
+      <!-- Header conversación -->
+      <div class="chats__conv-header">
+        <button class="chats__conv-back" (click)="volverALista()" aria-label="Volver a conversaciones">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <img [src]="getOtroParticipanteAvatar(chatActivo()!)" class="chats__conv-avatar"
+             [alt]="getOtroParticipanteNombre(chatActivo()!)">
+        <div>
+          <strong class="chats__conv-name">{{ getOtroParticipanteNombre(chatActivo()!) }}</strong>
+          <div class="chats__conv-property-wrapper" [class.chats__conv-property-wrapper--deleted]="!getPropiedad(chatActivo()!) || getPropiedad(chatActivo()!)?.estado === 'Eliminada'">
+            <span class="chats__conv-property">
+              <span class="material-symbols-outlined">home</span>
+              {{ getPropiedadTitulo(chatActivo()!) }}
+              @if (getPropiedad(chatActivo()!)?.estado === 'Oculta') {
+                <span class="chats__status-badge chats__status-badge--warning">(Oculta)</span>
+              }
+            </span>
+            @if (getPropiedad(chatActivo()!) && getPropiedad(chatActivo()!)?.estado !== 'Eliminada') {
+              <a [routerLink]="['/propiedad', getPropiedad(chatActivo()!)!.id]" class="chats__conv-property-link" title="Ver publicación">
+                <span class="material-symbols-outlined">open_in_new</span>
+              </a>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensajes -->
+      <div class="chats__messages" #messagesContainer>
+        @if (getPropiedad(chatActivo()!)?.estado === 'Eliminada') {
+          <div class="chats__system-banner chats__system-banner--warning">
+            <span class="material-symbols-outlined">info</span>
+            <p>La publicación asociada ha sido eliminada por el arrendador, pero puedes seguir comunicándote aquí para aclarar detalles o concretar el arriendo.</p>
+          </div>
+        }
+
+        @if (chatActivo()!.mensajes.length === 0) {
+          <div class="chats__messages-empty">
+            <span class="material-symbols-outlined">waving_hand</span>
+            <p>¡Inicia la conversación!</p>
+          </div>
+        }
+        @for (msg of chatActivo()!.mensajes; track msg.id) {
+          <div class="chats__message"
+               [class.chats__message--own]="msg.autorId === currentUserId()"
+               [class.chats__message--other]="msg.autorId !== currentUserId()">
+            <div class="chats__message-bubble">
+              <p>{{ msg.texto }}</p>
+              <span class="chats__message-time">{{ formatTime(msg.timestamp) }}</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Input -->
+      @if (!getPropiedad(chatActivo()!)) {
+        <div class="chats__system-banner chats__system-banner--danger chats__system-banner--bottom">
+          <span class="material-symbols-outlined">block</span>
+          <p>Esta publicación fue eliminada permanentemente. Ya no puedes enviar mensajes por este medio.</p>
+        </div>
+      } @else {
+        <div class="chats__input-area">
+          <input type="text" [(ngModel)]="nuevoMensaje"
+                 placeholder="Escribe un mensaje..."
+                 class="chats__input-field"
+                 (keyup.enter)="enviarMensaje()">
+          <button class="chats__send-btn" (click)="enviarMensaje()" [disabled]="!nuevoMensaje.trim()">
+            <span class="material-symbols-outlined">send</span>
+          </button>
+        </div>
+      }
+    } @else {
+      <!-- No hay chat seleccionado -->
+      <div class="chats__no-selection">
+        <span class="material-symbols-outlined chats__no-selection-icon">forum</span>
+        <h3>Selecciona una conversación</h3>
+        <p>Elige un chat de la lista para ver los mensajes</p>
+      </div>
+    }
+  </div>
+</div>

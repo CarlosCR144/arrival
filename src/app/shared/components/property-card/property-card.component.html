@@ -1,0 +1,64 @@
+<div class="card" [class.card--list]="mode() === 'list'">
+  <div class="card__image-container">
+    <img [src]="propiedad().imagenes[0]" [alt]="propiedad().titulo" class="card__image">
+
+    <!-- Badges -->
+    @if (arrendadorVerificado()) {
+      <div class="card__badge card__badge--verified">
+        <span class="material-symbols-outlined">verified</span>
+        Propietario Verificado
+      </div>
+    }
+    @if (propiedad().amoblado) {
+      <div class="card__badge card__badge--amoblado">Amoblado</div>
+    }
+    @if (propiedad().nuevo) {
+      <div class="card__badge card__badge--nuevo">Nuevo</div>
+    }
+
+    <!-- Favorite button -->
+    @if (!auth.currentUser() || auth.currentUser()?.rol === 'arrendatario') {
+      <button class="card__fav-btn" (click)="toggleFavorito(); $event.stopPropagation()" [class.card__fav-btn--active]="esFavorito()">
+        <span class="material-symbols-outlined" [class.filled]="esFavorito()">favorite</span>
+      </button>
+    }
+  </div>
+
+  <div class="card__content">
+    <div class="card__header">
+      <h3 class="card__title">{{ propiedad().titulo }}</h3>
+      <span class="card__price">{{ propiedad().precio | precioChileno }}</span>
+    </div>
+
+    <div class="card__location">
+      <span class="material-symbols-outlined">location_on</span>
+      <span>{{ propiedad().sector }}, Valdivia</span>
+    </div>
+
+    <div class="card__stats">
+      <div class="card__stat">
+        <span class="material-symbols-outlined">bed</span>
+        <span>{{ propiedad().habitaciones }} Hab</span>
+      </div>
+      <div class="card__stat">
+        <span class="material-symbols-outlined">shower</span>
+        <span>{{ propiedad().banos }} {{ propiedad().banos === 1 ? 'Baño' : 'Baños' }}</span>
+      </div>
+      <div class="card__stat">
+        <span class="material-symbols-outlined">straighten</span>
+        <span>{{ propiedad().metrosCuadrados }} m²</span>
+      </div>
+    </div>
+
+    <div class="card__actions">
+      <button class="btn-primary card__detail-btn" (click)="verDetalle()">Ver Detalles</button>
+      <button class="card__compare-btn"
+              [class.card__compare-btn--active]="estaEnComparador()"
+              [disabled]="comparadorLleno() && !estaEnComparador()"
+              (click)="toggleComparador(); $event.stopPropagation()"
+              title="Comparar">
+        <span class="material-symbols-outlined">compare_arrows</span>
+      </button>
+    </div>
+  </div>
+</div>
