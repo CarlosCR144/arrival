@@ -57,6 +57,9 @@ export class ExplorarComponent {
     if (f.aceptaMascotas === true) labels.push('Mascotas');
     if (f.tipoContrato !== 'todos') labels.push(f.tipoContrato === 'año_corrido' ? 'Año corrido' : 'Mar-Dic');
     if (f.calefaccion.length > 0) labels.push(...f.calefaccion);
+    if (f.habitacionesMin !== null) labels.push(`Mín. ${f.habitacionesMin} hab.`);
+    if (f.banosMin !== null) labels.push(`Mín. ${f.banosMin} baño(s)`);
+    if (f.metrosCuadradosMin > 0) labels.push(`Mín. ${f.metrosCuadradosMin}m²`);
     return labels.join(' · ');
   });
 
@@ -127,5 +130,20 @@ export class ExplorarComponent {
 
   isCalefaccionActive(tipo: string): boolean {
     return this.propiedadesService.filtros().calefaccion.includes(tipo as TipoCalefaccion);
+  }
+
+  onHabitacionesChange(val: number | null): void {
+    const current = this.propiedadesService.filtros().habitacionesMin;
+    this.propiedadesService.actualizarFiltros({ habitacionesMin: current === val ? null : val });
+  }
+
+  onBanosChange(val: number | null): void {
+    const current = this.propiedadesService.filtros().banosMin;
+    this.propiedadesService.actualizarFiltros({ banosMin: current === val ? null : val });
+  }
+
+  onMetrosChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.propiedadesService.actualizarFiltros({ metrosCuadradosMin: Number(value) });
   }
 }
