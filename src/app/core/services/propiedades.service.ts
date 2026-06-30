@@ -83,9 +83,10 @@ export class PropiedadesService {
       if (data.session?.comparador) {
         this.comparador.set(data.session.comparador);
       }
-      // Restaurar filtros desde sesión
+      // Restaurar filtros desde sesión (merge con FILTROS_INITIAL para garantizar
+      // que nuevos campos siempre tengan valor por defecto aunque no estén en sesiones antiguas)
       if (data.session?.filtrosActivos) {
-        this.filtros.set(data.session.filtrosActivos);
+        this.filtros.set({ ...FILTROS_INITIAL, ...data.session.filtrosActivos });
       }
     }
   }
