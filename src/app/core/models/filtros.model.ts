@@ -8,6 +8,9 @@ export interface FiltrosState {
   calefaccion: TipoCalefaccion[];
   amoblado: boolean | null;
   aceptaMascotas: boolean | null;
+  habitacionesMin: number | null;
+  banosMin: number | null;
+  metrosCuadradosMin: number;
 }
 
 export const FILTROS_INITIAL: FiltrosState = {
@@ -18,4 +21,7 @@ export const FILTROS_INITIAL: FiltrosState = {
   calefaccion: [],
   amoblado: null,
   aceptaMascotas: null,
+  habitacionesMin: null,
+  banosMin: null,
+  metrosCuadradosMin: 0,
 };

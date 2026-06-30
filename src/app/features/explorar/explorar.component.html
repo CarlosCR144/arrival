@@ -117,6 +117,56 @@
       </div>
     </div>
 
+    <hr class="explorar__divider">
+
+    <!-- Habitaciones mínimas -->
+    <div class="explorar__filter-group">
+      <h3 class="explorar__filter-title">Habitaciones</h3>
+      <div class="explorar__pill-group">
+        @for (n of [1, 2, 3, 4]; track n) {
+          <button class="explorar__pill"
+                  [class.explorar__pill--active]="propiedadesService.filtros().habitacionesMin === n"
+                  (click)="onHabitacionesChange(n)">
+            {{ n }}+
+          </button>
+        }
+      </div>
+    </div>
+
+    <hr class="explorar__divider">
+
+    <!-- Baños mínimos -->
+    <div class="explorar__filter-group">
+      <h3 class="explorar__filter-title">Baños</h3>
+      <div class="explorar__pill-group">
+        @for (n of [1, 2, 3]; track n) {
+          <button class="explorar__pill"
+                  [class.explorar__pill--active]="propiedadesService.filtros().banosMin === n"
+                  (click)="onBanosChange(n)">
+            {{ n }}+
+          </button>
+        }
+      </div>
+    </div>
+
+    <hr class="explorar__divider">
+
+    <!-- Metros cuadrados mínimos -->
+    <div class="explorar__filter-group">
+      <h3 class="explorar__filter-title">Metros cuadrados mínimos</h3>
+      <div class="explorar__range-track">
+        <div class="explorar__range-fill" [style.width.%]="(propiedadesService.filtros().metrosCuadradosMin / 200) * 100"></div>
+        <input type="range" min="0" max="200" step="10"
+               class="explorar__range"
+               [value]="propiedadesService.filtros().metrosCuadradosMin"
+               (input)="onMetrosChange($event)">
+      </div>
+      <div class="explorar__range-labels">
+        <span>0m²</span>
+        <span class="explorar__range-value">{{ propiedadesService.filtros().metrosCuadradosMin }}m²+</span>
+      </div>
+    </div>
+
   </aside>
 
   <!-- Contenido principal -->

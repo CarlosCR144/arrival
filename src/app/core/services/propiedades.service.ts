@@ -57,6 +57,21 @@ export class PropiedadesService {
       result = result.filter(p => p.aceptaMascotas === f.aceptaMascotas);
     }
 
+    // Filtro habitaciones mínimas
+    if (f.habitacionesMin !== null) {
+      result = result.filter(p => p.habitaciones >= f.habitacionesMin!);
+    }
+
+    // Filtro baños mínimos
+    if (f.banosMin !== null) {
+      result = result.filter(p => p.banos >= f.banosMin!);
+    }
+
+    // Filtro metros cuadrados mínimos
+    if (f.metrosCuadradosMin > 0) {
+      result = result.filter(p => p.metrosCuadrados >= f.metrosCuadradosMin);
+    }
+
     return result;
   });
 
